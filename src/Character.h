@@ -3,15 +3,14 @@
 
 #include "common.h"
 
-#include "Input.h"
-
 class Character
 {
 public:
 	Character(SDL_Renderer* const& renderer, const std::string& texturePath);
 	~Character();
-	void control(Input const& input);
 	void draw();
+	void move(SDL_Rect &delta);
+	void getPosition();
 
 private:
 	bool loadTexture(const std::string& texturePath);

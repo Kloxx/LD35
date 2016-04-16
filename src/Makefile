@@ -28,6 +28,9 @@ Input.o: Input.cpp common.h
 Character.o: Character.cpp common.h Input.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 	
+Level.o: Level.cpp common.h Input.h Character.h
+	$(CC) -o $@ -c $< $(CFLAGS)
+	
 SceneOpenGL.o: SceneOpenGL.cpp common.h Input.h Character.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 

@@ -2,6 +2,7 @@
 #define COMMON_H_INCLUDED
 
 #define USE_OPENGL_TRUE
+#define NDEBUG
 
 // OpenGL
 #ifdef USE_OPENGL_TRUE

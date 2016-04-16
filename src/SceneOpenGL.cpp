@@ -98,6 +98,14 @@ bool SceneOpenGL::initWindow(const std::string& windowTitle)
 		return false;
 	}
 	
+	SDL_Surface* icon = IMG_Load("ld35.png");
+	if(icon == NULL)
+	{
+		log_file << "Unable to load image ld35.png ! SDL_image Error : " << IMG_GetError() << std::endl;
+		return false;
+	}
+	SDL_SetWindowIcon(m_window, icon);
+	
 	return true;
 }
 
@@ -143,7 +151,7 @@ void SceneOpenGL::mainLoop()
     m_input.afficherPtr(true);
     m_input.capturePtr(false);
 	
-	Character character(m_renderer, "assets/char.png");
+	Level level(m_renderer);
 	
 	// start loop
 	while(!m_input.terminate())
@@ -164,7 +172,8 @@ void SceneOpenGL::mainLoop()
 		SDL_RenderClear(m_renderer);
 		
 		// render
-		character.draw();
+		level.control(m_input);
+		level.draw();
 		
 		// update screen
 		SDL_RenderPresent(m_renderer);

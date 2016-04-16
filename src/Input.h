@@ -31,7 +31,7 @@ public:
     void closeGameControllers();
     void autoMap();
     bool getControllerButton(const int gameControllerNumber, const Uint8 button) const;
-    int getControllerAxes(const int gameControllerNumber, const Uint8 axis) const;
+    int getControllerAxis(const int gameControllerNumber, const Uint8 axis) const;
     Uint8 getControllerHat(const int gameControllerNumber) const;
 
     // Pointer
@@ -55,7 +55,7 @@ private:
     SDL_GameController* m_gameControllers[4];
 
     bool m_gameControllerButtons[4][13];  // Max 13 buttons
-    Sint16 m_gameControllerAxes[4][6];    // Max 6 axes
+    Sint16 m_gameControllerAxis[4][6];    // Max 6 axes
     Uint8 m_gameControllerHat[4];
 
     // Close

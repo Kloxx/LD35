@@ -21,7 +21,7 @@ Input::Input() :
         for(int j(0); j<13; j++)
             m_gameControllerButtons[i][j] = false;
         for(int j(0); j<6; j++)
-            m_gameControllerAxes[i][j] = 0;
+            m_gameControllerAxis[i][j] = 0;
         m_gameControllerHat[i] = SDL_HAT_CENTERED;
     }
 	
@@ -54,6 +54,8 @@ void Input::openGameControllers()
         else
             input_log << "Controller #" << i << " is not supported." << std::endl;
     }
+	
+    SDL_GameControllerEventState(SDL_ENABLE);
 }
 
 void Input::closeGameControllers()
@@ -73,8 +75,6 @@ void Input::updateEvents()
 {
     m_mouseRelX = 0;
     m_mouseRelY = 0;
-
-    SDL_GameControllerEventState(SDL_ENABLE);
 
     while(SDL_PollEvent(&m_events))
     {
@@ -157,7 +157,7 @@ void Input::updateEvents()
             break;
 
         case SDL_CONTROLLERAXISMOTION:
-            m_gameControllerAxes[m_events.caxis.which][m_events.caxis.axis] = m_events.caxis.value;
+            m_gameControllerAxis[m_events.caxis.which][m_events.caxis.axis] = m_events.caxis.value;
             break;
 
         case SDL_CONTROLLERDEVICEADDED:
@@ -223,9 +223,9 @@ bool Input::getControllerButton(const int gameControllerNumber, const Uint8 butt
     return m_gameControllerButtons[gameControllerNumber][button];
 }
 
-int Input::getControllerAxes(const int gameControllerNumber, const Uint8 axis) const
+int Input::getControllerAxis(const int gameControllerNumber, const Uint8 axis) const
 {
-    return m_gameControllerAxes[gameControllerNumber][axis];
+    return m_gameControllerAxis[gameControllerNumber][axis];
 }
 
 Uint8 Input::getControllerHat(const int gameControllerNumber) const

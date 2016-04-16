@@ -18,13 +18,15 @@ Character::~Character()
 	m_charTexture = NULL;
 }
 
-void Character::control(Input const& m_input)
-{
-}
-
 void Character::draw()
 {
 	SDL_RenderCopyEx(m_renderer, m_charTexture, NULL, &m_charPos, m_charAngle, NULL, SDL_FLIP_NONE);
+}
+
+void Character::move(SDL_Rect &delta)
+{
+	m_charPos.x += delta.x;
+	m_charPos.y += delta.y;
 }
 
 bool Character::loadTexture(const std::string& texturePath)

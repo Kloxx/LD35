@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-#include "Character.h"
+#include "Level.h"
 #include "Input.h"
 
 class SceneOpenGL
