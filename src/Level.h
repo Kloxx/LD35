@@ -14,6 +14,7 @@ public:
 	void control(Input const& input);
 
 private:
+	float getVectorNorm(float x, float y);
 	Character m_character;
 };
 
