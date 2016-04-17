@@ -1,7 +1,7 @@
 CC = g++
 DEBUG = yes
 ifeq ($(DEBUG),yes)
-	CFLAGS = -w -Wl,-subsystem,windows -g
+	CFLAGS = -w -Wl,-subsystem,windows -g -std=gnu++0x
 else
 	CFLAGS = -w -Wl,-subsystem,windows
 endif

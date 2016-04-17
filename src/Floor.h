@@ -6,7 +6,10 @@
 #define NUM_TILES_WIDTH 16
 #define NUM_TILES_HEIGHT 12
 #define TOTAL_TILES 192
-#define TOTAL_TILE_SPRITES 12
+#define TOTAL_TILE_SPRITES 256
+
+#define TILE_SIZE 32
+#define TILE_SIZE_FINAL 96
 
 class Tile
 {
@@ -18,6 +21,7 @@ public:
 	int getType();
 	SDL_Rect getBox();
 	void setBox(SDL_Rect& box);
+	void setType(int tileType);
 	
 private:
 	SDL_Rect m_box;
@@ -37,7 +41,7 @@ private:
 	bool loadTexture(std::string const& tileSetPath);
 	bool checkCollision(SDL_Rect a, SDL_Rect b);
 	
-	int m_mapData[TOTAL_TILES];
+	//std::string m_mapData[TOTAL_TILES];
 	Tile m_tiles[TOTAL_TILES];
 	SDL_Renderer* m_renderer;
 	SDL_Texture* m_tileSet;

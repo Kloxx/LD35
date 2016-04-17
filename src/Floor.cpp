@@ -52,21 +52,24 @@ bool Floor::setTiles(std::string const& mapPath)
 	for(int i(0); i < TOTAL_TILES; i++)
 	{
 		int tileType = -1;
+		std::string tileTypeStr = "";
 		
-		map >> tileType;
+		map >> tileTypeStr;
 		if(map.fail())
 		{
 			floor_log << "Error loading map: Unexpected EoF!" << std::endl;
 			return false;
 		}
 		
+		tileType = std::stoi(tileTypeStr, nullptr, 16);
 		if((tileType < 0) || (tileType >= TOTAL_TILE_SPRITES))
 		{
 			floor_log << "Error loading map: Invalid tile type at " << i  << std::endl;
 			return false;
 		}
-		SDL_Rect box = {x*32, y*32, 32, 32};
+		SDL_Rect box = {x*TILE_SIZE_FINAL, y*TILE_SIZE_FINAL, TILE_SIZE_FINAL, TILE_SIZE_FINAL};
 		m_tiles[i].setBox(box);
+		m_tiles[i].setType(tileType);
 		
 		x += 1;
 		if(x >= NUM_TILES_WIDTH)
@@ -83,10 +86,11 @@ void Floor::draw(SDL_Rect& camera)
 	for(int i(0); i < TOTAL_TILES; i++)
 	{
 		SDL_Rect box = m_tiles[i].getBox();
-		//floor_log << box.w << "," << box.h << " / " << camera.w << "," << camera.h << std::endl;
+		int tileType = m_tiles[i].getType();
 		if(checkCollision(camera, box))
 		{
-			SDL_Rect tile = {96,32,32,32};
+			
+			SDL_Rect tile = {tileType%16 * TILE_SIZE, tileType/16 * TILE_SIZE, TILE_SIZE, TILE_SIZE};
 			box.x = box.x - camera.x;
 			box.y = box.y - camera.y;
 			SDL_RenderCopy(m_renderer, m_tileSet, &tile, &box);
@@ -140,4 +144,9 @@ int Tile::getType()
 void Tile::setBox(SDL_Rect& box)
 {
 	m_box = box;
+}
+
+void Tile::setType(int tileType)
+{
+	m_type = tileType;
 }

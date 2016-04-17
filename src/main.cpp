@@ -8,10 +8,8 @@ int main(int argc, char **argv)
 	if(!scene.initWindow("LD35 - Shapeshift")) 
 		return -1;
 	
-	#ifdef USE_OPENGL_TRUE
     if(!scene.initGL()) 
 		return -1;
-	#endif // USE_OPENGL_TRUE
 	
 	scene.mainLoop();
 	
