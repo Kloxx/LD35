@@ -169,6 +169,9 @@ void SceneOpenGL::mainLoop()
 		if(m_input.getKey(SDL_SCANCODE_ESCAPE))
 			break;
 			
+		if(m_input.getControllerButton(JOY0, SDL_CONTROLLER_BUTTON_START))
+			break;
+			
 		if(increment)
 		{
 			red += 3;

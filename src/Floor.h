@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-#define MAX_TILES 256
+#define MAX_TILES 1024
 #define TOTAL_TILE_SPRITES 256
 
 #define TILE_SIZE 32

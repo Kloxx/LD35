@@ -27,14 +27,24 @@ void Level::control(Input const& input)
 {
 	float y(0);
 	float x(0);
-	if(input.getKey(SDL_SCANCODE_UP) || input.getKey(SDL_SCANCODE_W) || input.getControllerAxis(JOY0, SDL_CONTROLLER_AXIS_LEFTY) < -10000)
+	float yaxis(input.getControllerAxis(JOY0, SDL_CONTROLLER_AXIS_LEFTY));
+	float xaxis(input.getControllerAxis(JOY0, SDL_CONTROLLER_AXIS_LEFTX));
+	if(input.getKey(SDL_SCANCODE_UP) || input.getKey(SDL_SCANCODE_W))
 		y -= SPEED;
-	if(input.getKey(SDL_SCANCODE_DOWN) || input.getKey(SDL_SCANCODE_S) || input.getControllerAxis(JOY0, SDL_CONTROLLER_AXIS_LEFTY) > 10000)
+	if(input.getKey(SDL_SCANCODE_DOWN) || input.getKey(SDL_SCANCODE_S))
 		y += SPEED;
-	if(input.getKey(SDL_SCANCODE_LEFT) || input.getKey(SDL_SCANCODE_A) || input.getControllerAxis(JOY0, SDL_CONTROLLER_AXIS_LEFTX) < -10000)
+	if(input.getKey(SDL_SCANCODE_LEFT) || input.getKey(SDL_SCANCODE_A))
 		x -= SPEED;
-	if(input.getKey(SDL_SCANCODE_RIGHT) || input.getKey(SDL_SCANCODE_D) || input.getControllerAxis(JOY0, SDL_CONTROLLER_AXIS_LEFTX) > 10000)
+	if(input.getKey(SDL_SCANCODE_RIGHT) || input.getKey(SDL_SCANCODE_D))
 		x += SPEED;
+		
+	if(yaxis < -5000 || yaxis > 5000)
+		y += SPEED * yaxis / 32768;
+	if(xaxis < -5000 || xaxis > 5000)
+		x += SPEED * xaxis / 32768;
+	
+	
+	
 	if(x && y)
 	{
 		float norm = getVectorNorm(x, y);

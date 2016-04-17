@@ -89,11 +89,6 @@ void Floor::draw(SDL_Rect const& camera, SDL_Rect const& character)
 	{
 		SDL_Rect box = m_tiles[i].getBox();
 		int tileType = m_tiles[i].getType();
-		SDL_Rect halfScreenCamera;
-		halfScreenCamera.x = camera.x + WINDOW_WIDTH / 4;
-		halfScreenCamera.y = camera.y + WINDOW_HEIGHT / 4;
-		halfScreenCamera.w = camera.w / 2;
-		halfScreenCamera.h = camera.h / 2;
 		if(getDistance(character, box) < 400)
 		{
 			m_tiles[i].setVisible(true);
