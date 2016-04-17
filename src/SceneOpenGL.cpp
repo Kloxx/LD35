@@ -10,6 +10,7 @@ SceneOpenGL::SceneOpenGL(const bool fullscreen) :
 
 SceneOpenGL::~SceneOpenGL()
 {
+	log_file << "coucou";
 	m_input.closeGameControllers();
 	SDL_GL_DeleteContext(m_GLContext);
 	SDL_DestroyWindow(m_window);
@@ -19,6 +20,7 @@ SceneOpenGL::~SceneOpenGL()
 	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
+	log_file << "c'est moi";
 }
 
 bool SceneOpenGL::initWindow(const std::string& windowTitle)

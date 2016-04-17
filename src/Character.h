@@ -10,14 +10,14 @@ public:
 	~Character();
 	void draw();
 	void move(SDL_Rect &delta);
-	void getPosition();
+	SDL_Rect getBox();
 
 private:
 	bool loadTexture(const std::string& texturePath);
 
 	SDL_Renderer* m_renderer;
 	SDL_Texture* m_charTexture;
-	SDL_Rect m_charPos;
+	SDL_Rect m_charBox;
 	float m_charAngle;
 };
 
