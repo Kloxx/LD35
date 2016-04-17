@@ -8,7 +8,7 @@ class NPC
 public:
 	NPC(SDL_Renderer* const& renderer, const std::string& texturePath, SDL_Rect position);
 	~NPC();
-	void draw();
+	void draw(SDL_Rect const& camera);
 	void move(SDL_Rect &delta);
 	SDL_Rect getPosition();
 	
@@ -17,7 +17,7 @@ private:
 
 	SDL_Renderer* m_renderer;
 	SDL_Texture* m_npcTexture;
-	SDL_Rect m_npcPos;
+	SDL_Rect m_npcBox;
 	float m_npcAngle;
 };
 

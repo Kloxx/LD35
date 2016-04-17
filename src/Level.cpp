@@ -20,7 +20,7 @@ void Level::draw()
 	setCamera();
 	m_floor.draw(m_camera, m_character.getBox());
 	m_character.draw(m_camera);
-	m_npc1.draw();
+	m_npc1.draw(m_camera);
 }
 
 void Level::control(Input const& input)
@@ -64,12 +64,25 @@ void Level::control(Input const& input)
 
 void Level::setCamera()
 {
-	m_camera.x = (m_character.getX() + m_character.getW() / 2) - WINDOW_WIDTH/2;
+	SDL_Point levelSize = m_floor.getLevelSize();
+	int distX = (m_character.getX() + m_character.getW()/2) - WINDOW_WIDTH/2 - m_camera.x;
+	int distY = (m_character.getY() + m_character.getH()/2) - WINDOW_HEIGHT/2 - m_camera.y;
+	
+	//m_camera.x = (m_character.getX() + m_character.getW() / 2) - WINDOW_WIDTH/2;
+	m_camera.x += distX/30;
+	
 	if(m_camera.x < 0)
 		m_camera.x = 0;
-	m_camera.y = (m_character.getY() + m_character.getH() / 2) - WINDOW_HEIGHT/2;
+	if(m_camera.x > levelSize.x - m_camera.w)
+		m_camera.x = levelSize.x - m_camera.w;
+	
+	//m_camera.y = (m_character.getY() + m_character.getH() / 2) - WINDOW_HEIGHT/2;
+	m_camera.y += distY/30;
+	
 	if(m_camera.y < 0)
 		m_camera.y = 0;
+	if(m_camera.y > levelSize.y - m_camera.h)
+		m_camera.y = levelSize.y - m_camera.h;
 }
 
 float Level::getVectorNorm(float x, float y)

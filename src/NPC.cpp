@@ -4,7 +4,7 @@ std::ofstream npc_log("npc_log.txt", std::ofstream::out | std::ofstream::trunc);
 
 NPC::NPC(SDL_Renderer* const& renderer, const std::string& texturePath, SDL_Rect position) :
 	m_renderer(renderer), m_npcTexture(NULL),
-	m_npcAngle(0), m_npcPos(position)
+	m_npcAngle(0), m_npcBox(position)
 {
 	const bool success = loadTexture(texturePath);
     assert( success );
@@ -18,15 +18,19 @@ NPC::~NPC()
 	npc_log << " c'est moi";
 }
 
-void NPC::draw()
+void NPC::draw(SDL_Rect const& camera)
 {
-	SDL_RenderCopyEx(m_renderer, m_npcTexture, NULL, &m_npcPos, m_npcAngle, NULL, SDL_FLIP_NONE);
+	SDL_Rect box = {0, 0, m_npcBox.w, m_npcBox.h};
+	box.x = m_npcBox.x - camera.x;
+	box.y = m_npcBox.y - camera.y;
+	SDL_RenderCopyEx(m_renderer, m_npcTexture, NULL, &box, m_npcAngle, NULL, SDL_FLIP_NONE);
+	//SDL_RenderCopyEx(m_renderer, m_npcTexture, NULL, &m_npcBox, m_npcAngle, NULL, SDL_FLIP_NONE);
 }
 
 void NPC::move(SDL_Rect &delta)
 {
-	m_npcPos.x += delta.x;
-	m_npcPos.y += delta.y;
+	m_npcBox.x += delta.x;
+	m_npcBox.y += delta.y;
 }
 
 bool NPC::loadTexture(const std::string& texturePath)
@@ -52,5 +56,5 @@ bool NPC::loadTexture(const std::string& texturePath)
 
 SDL_Rect NPC::getPosition()
 {
-	return m_npcPos;
+	return m_npcBox;
 }

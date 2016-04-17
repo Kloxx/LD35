@@ -50,7 +50,7 @@ bool Floor::setTiles()
 	m_mapData >> m_levelWidth;
 	m_mapData >> m_levelHeight;
 	m_totalTiles = m_levelHeight * m_levelWidth;
-	
+	m_levelSize = {m_levelWidth * TILE_SIZE_FINAL, m_levelHeight * TILE_SIZE_FINAL};
 	for(int i(0); i < m_totalTiles; i++)
 	{
 		int tileType = -1;
@@ -74,7 +74,7 @@ bool Floor::setTiles()
 		m_tiles[i].setType(tileType);
 		
 		x += 1;
-		if(x >= m_levelWidth)
+		if(x >= 22)
 		{
 			x = 0;
 			y += 1;
@@ -89,26 +89,26 @@ void Floor::draw(SDL_Rect const& camera, SDL_Rect const& character)
 	{
 		SDL_Rect box = m_tiles[i].getBox();
 		int tileType = m_tiles[i].getType();
-		if(getDistance(character, box) < 400)
+		if(checkCollision(camera, box))
 		{
 			m_tiles[i].setVisible(true);
-			m_tiles[i].changeHeight(20);
+			//m_tiles[i].changeHeight(20);
 			SDL_Rect tile = {tileType%16 * TILE_SIZE, tileType/16 * TILE_SIZE, TILE_SIZE, TILE_SIZE};
 			box.x = box.x - camera.x;
-			box.y = box.y - camera.y - m_tiles[i].getHeight();
+			box.y = box.y - camera.y; // - m_tiles[i].getHeight();
 			SDL_RenderCopy(m_renderer, m_tileSet, &tile, &box);
 		}
 		else
 		{
 			m_tiles[i].setVisible(false);
-			m_tiles[i].changeHeight(-20);
+			/*m_tiles[i].changeHeight(-20);
 			if(m_tiles[i].getHeight() > -WINDOW_HEIGHT / 2 + 10)
 			{
 				SDL_Rect tile = {tileType%16 * TILE_SIZE, tileType/16 * TILE_SIZE, TILE_SIZE, TILE_SIZE};
 				box.x = box.x - camera.x;
 				box.y = box.y - camera.y - m_tiles[i].getHeight();
 				SDL_RenderCopy(m_renderer, m_tileSet, &tile, &box);
-			}
+			}*/
 		}
 	}
 }
@@ -123,6 +123,11 @@ bool Floor::touchesWall(SDL_Rect box)
 					return true;
 	}
 	return false;
+}
+
+SDL_Point Floor::getLevelSize()
+{
+	return m_levelSize;
 }
 
 bool Floor::checkCollision(SDL_Rect const& a, SDL_Rect const& b)

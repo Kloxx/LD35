@@ -20,7 +20,7 @@ Character::~Character()
 	char_log << " c'est moi";
 }
 
-void Character::draw(SDL_Rect& camera)
+void Character::draw(SDL_Rect const& camera)
 {
 	SDL_Rect box = {0, 0, m_charBox.w, m_charBox.h};
 	box.x = m_charBox.x - camera.x;
