@@ -22,22 +22,22 @@ all: $(EXEC)
 ../LD35.exe: $(OBJ)
 	$(CC) -o $@ $^ $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(LDFLAGS)
 
-Input.o: Input.cpp common.h
+Input.o: Input.cpp Input.h common.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 	
-Character.o: Character.cpp common.h
+Character.o: Character.cpp Character.h common.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 	
-NPC.o: NPC.cpp common.h
+NPC.o: NPC.cpp NPC.h common.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 	
-Floor.o: Floor.cpp common.h
+Floor.o: Floor.cpp Floor.h common.h
 	$(CC) -o $@ -c $< $(CFLAGS)	
 	
-Level.o: Level.cpp common.h Input.h Character.h Floor.h
+Level.o: Level.cpp Level.h common.h Input.h Character.h Floor.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 	
-SceneOpenGL.o: SceneOpenGL.cpp common.h Input.h Character.h
+SceneOpenGL.o: SceneOpenGL.cpp SceneOpenGL.h common.h Level.h
 	$(CC) -o $@ -c $< $(CFLAGS)
 
 main.o: main.cpp SceneOpenGL.h

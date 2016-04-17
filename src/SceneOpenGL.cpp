@@ -154,6 +154,8 @@ void SceneOpenGL::mainLoop()
     m_input.capturePtr(false);
 	
 	Level level(m_renderer);
+	int red(15);
+	bool increment(true);
 	
 	// start loop
 	while(!m_input.terminate())
@@ -167,8 +169,20 @@ void SceneOpenGL::mainLoop()
 		if(m_input.getKey(SDL_SCANCODE_ESCAPE))
 			break;
 			
-		if(m_input.getControllerButton(0, 0))
-			break;
+		if(increment)
+		{
+			red += 3;
+			if(red>120)
+				increment = false;
+		}
+		else
+		{
+			red -= 3;
+			if(red<15)
+				increment = true;
+		}
+			
+		SDL_SetRenderDrawColor(m_renderer, 0xbb, 0xbb, 0xbb, 0xff);
 		
 		// clear screen
 		SDL_RenderClear(m_renderer);

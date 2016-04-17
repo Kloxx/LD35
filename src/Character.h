@@ -8,9 +8,15 @@ class Character
 public:
 	Character(SDL_Renderer* const& renderer, const std::string& texturePath);
 	~Character();
-	void draw();
-	void move(SDL_Rect &delta);
+	void draw(SDL_Rect& camera);
+	void moveX(int x);
+	void moveY(int y);
+	
 	SDL_Rect getBox();
+	int getX();
+	int getY();
+	int getW();
+	int getH();
 
 private:
 	bool loadTexture(const std::string& texturePath);

@@ -5,7 +5,7 @@ std::ofstream level_log("level_log.txt", std::ofstream::out | std::ofstream::tru
 Level::Level(SDL_Renderer* const& renderer) :
 	m_character(renderer, "data/assets/char.png"),
 	m_npc1(renderer, "data/assets/npc.png", {50, 50, 32, 32}),
-	m_floor(renderer, "data/assets/tilesheet.png", "levels/level1.map")
+	m_floor(renderer, "data/assets/tilesheet2.png", "data/levels/level1.map")
 {
 	m_camera = {0,0,WINDOW_WIDTH,WINDOW_HEIGHT};
 }
@@ -17,8 +17,9 @@ Level::~Level()
 
 void Level::draw()
 {
-	m_floor.draw(m_camera);
-	m_character.draw();
+	setCamera();
+	m_floor.draw(m_camera, m_character.getBox());
+	m_character.draw(m_camera);
 	m_npc1.draw();
 }
 
@@ -37,12 +38,28 @@ void Level::control(Input const& input)
 	if(x && y)
 	{
 		float norm = getVectorNorm(x, y);
-		x = x * SPEED / norm;
-		y = y * SPEED / norm;
+		x = round(x * SPEED / norm);
+		y = round(y * SPEED / norm);
 	}
-		
-	SDL_Rect delta = {x, y, 0, 0};
-	m_character.move(delta);
+	
+	m_character.moveX(x);
+	if(m_floor.touchesWall(m_character.getBox()))
+		m_character.moveX(-x);
+	
+	
+	m_character.moveY(y);
+	if(m_floor.touchesWall(m_character.getBox()))
+		m_character.moveY(-y);
+}
+
+void Level::setCamera()
+{
+	m_camera.x = (m_character.getX() + m_character.getW() / 2) - WINDOW_WIDTH/2;
+	if(m_camera.x < 0)
+		m_camera.x = 0;
+	m_camera.y = (m_character.getY() + m_character.getH() / 2) - WINDOW_HEIGHT/2;
+	if(m_camera.y < 0)
+		m_camera.y = 0;
 }
 
 float Level::getVectorNorm(float x, float y)

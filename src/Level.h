@@ -16,6 +16,7 @@ public:
 	~Level();
 	void draw();
 	void control(Input const& input);
+	void setCamera();
 
 private:
 	SDL_Rect m_camera;

@@ -3,13 +3,11 @@
 
 #include "common.h"
 
-#define NUM_TILES_WIDTH 16
-#define NUM_TILES_HEIGHT 12
-#define TOTAL_TILES 192
+#define MAX_TILES 256
 #define TOTAL_TILE_SPRITES 256
 
 #define TILE_SIZE 32
-#define TILE_SIZE_FINAL 96
+#define TILE_SIZE_FINAL 64
 
 class Tile
 {
@@ -20,12 +18,18 @@ public:
 	Tile operator=(Tile* tile);
 	int getType();
 	SDL_Rect getBox();
+	bool isVisible();
+	int getHeight();
 	void setBox(SDL_Rect& box);
 	void setType(int tileType);
+	void setVisible(bool isVisible);
+	void changeHeight(int y);
 	
 private:
 	SDL_Rect m_box;
 	int m_type;
+	bool m_isVisible;
+	int m_height;
 };
 
 class Floor
@@ -34,15 +38,20 @@ public:
 	Floor(SDL_Renderer* const& renderer, std::string const& tileSetPath, 
 		std::string const& mapPath);
 	~Floor();
-	void draw(SDL_Rect& camera);
+	void draw(SDL_Rect const& camera, SDL_Rect const& character);
+	bool touchesWall(SDL_Rect box);
 	
 private:
-	bool setTiles(std::string const& mapPath);
+	bool setTiles();
 	bool loadTexture(std::string const& tileSetPath);
-	bool checkCollision(SDL_Rect a, SDL_Rect b);
+	bool checkCollision(SDL_Rect const& a, SDL_Rect const& b);
+	int getDistance(SDL_Rect const& a, SDL_Rect const& b);
 	
-	//std::string m_mapData[TOTAL_TILES];
-	Tile m_tiles[TOTAL_TILES];
+	std::ifstream m_mapData;
+	int m_levelWidth, m_levelHeight;
+	int m_totalTiles;
+	Tile m_tiles[MAX_TILES];
+		
 	SDL_Renderer* m_renderer;
 	SDL_Texture* m_tileSet;
 };

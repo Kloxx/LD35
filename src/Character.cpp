@@ -6,7 +6,7 @@ Character::Character(SDL_Renderer* const& renderer, const std::string& texturePa
 	m_renderer(renderer), m_charTexture(NULL),
 	m_charAngle(0)
 {
-	m_charBox = { WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, 32, 32 };
+	m_charBox = { 150, 150, 32, 32 };
 
 	const bool success = loadTexture(texturePath);
     assert( success );
@@ -20,15 +20,22 @@ Character::~Character()
 	char_log << " c'est moi";
 }
 
-void Character::draw()
+void Character::draw(SDL_Rect& camera)
 {
-	SDL_RenderCopyEx(m_renderer, m_charTexture, NULL, &m_charBox, m_charAngle, NULL, SDL_FLIP_NONE);
+	SDL_Rect box = {0, 0, m_charBox.w, m_charBox.h};
+	box.x = m_charBox.x - camera.x;
+	box.y = m_charBox.y - camera.y;
+	SDL_RenderCopyEx(m_renderer, m_charTexture, NULL, &box, m_charAngle, NULL, SDL_FLIP_NONE);
 }
 
-void Character::move(SDL_Rect &delta)
+void Character::moveX(int x)
 {
-	m_charBox.x += delta.x;
-	m_charBox.y += delta.y;
+	m_charBox.x += x;
+}
+
+void Character::moveY(int y)
+{
+	m_charBox.y += y;
 }
 
 bool Character::loadTexture(const std::string& texturePath)
@@ -55,4 +62,24 @@ bool Character::loadTexture(const std::string& texturePath)
 SDL_Rect Character::getBox()
 {
 	return m_charBox;
+}
+
+int Character::getX()
+{
+	return m_charBox.x;
+}
+
+int Character::getY()
+{
+	return m_charBox.y;
+}
+
+int Character::getW()
+{
+	return m_charBox.w;
+}
+
+int Character::getH()
+{
+	return m_charBox.h;
 }
