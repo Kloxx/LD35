@@ -24,6 +24,7 @@ private:
 	Character m_character;
 	NPC m_npc1;
 	Floor m_floor;
+	int m_currentButtonDown;
 };
 
 #endif // LEVEL_H_INCLUDED

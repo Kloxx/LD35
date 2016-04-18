@@ -3,11 +3,11 @@
 
 #include "common.h"
 
-#define MAX_TILES 1024
-#define TOTAL_TILE_SPRITES 256
+const int MAX_TILES=1024;
+const int TOTAL_TILE_SPRITES=256;
 
-#define TILE_SIZE 32
-#define TILE_SIZE_FINAL 96
+const int TILE_SIZE=32;
+const int TILE_SIZE_FINAL=96;
 
 class Tile
 {

@@ -23,8 +23,7 @@ void NPC::draw(SDL_Rect const& camera)
 	SDL_Rect box = {0, 0, m_npcBox.w, m_npcBox.h};
 	box.x = m_npcBox.x - camera.x;
 	box.y = m_npcBox.y - camera.y;
-	SDL_RenderCopyEx(m_renderer, m_npcTexture, NULL, &box, m_npcAngle, NULL, SDL_FLIP_NONE);
-	//SDL_RenderCopyEx(m_renderer, m_npcTexture, NULL, &m_npcBox, m_npcAngle, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopy(m_renderer, m_npcTexture, NULL, &box);
 }
 
 void NPC::move(SDL_Rect &delta)

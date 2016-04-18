@@ -3,9 +3,10 @@
 std::ofstream level_log("level_log.txt", std::ofstream::out | std::ofstream::trunc);
 
 Level::Level(SDL_Renderer* const& renderer) :
-	m_character(renderer, "data/assets/char.png"),
+	m_character(renderer, "data/assets/char/"),
 	m_npc1(renderer, "data/assets/npc.png", {50, 50, 32, 32}),
-	m_floor(renderer, "data/assets/tilesheet2.png", "data/levels/level1.map")
+	m_floor(renderer, "data/assets/tilesheet2.png", "data/levels/level1.map"),
+	m_currentButtonDown(NULL)
 {
 	m_camera = {0,0,WINDOW_WIDTH,WINDOW_HEIGHT};
 }
@@ -25,6 +26,7 @@ void Level::draw()
 
 void Level::control(Input const& input)
 {
+	// direction
 	float y(0);
 	float x(0);
 	float yaxis(input.getControllerAxis(JOY0, SDL_CONTROLLER_AXIS_LEFTY));
@@ -43,13 +45,32 @@ void Level::control(Input const& input)
 	if(xaxis < -5000 || xaxis > 5000)
 		x += SPEED * xaxis / 32768;
 	
-	
-	
 	if(x && y)
 	{
 		float norm = getVectorNorm(x, y);
 		x = round(x * SPEED / norm);
 		y = round(y * SPEED / norm);
+	}
+	
+	if(!x && !y)
+	{
+		m_character.setState(CHAR_STILL);
+	}
+	
+	if(x || y)
+	{
+		m_character.setState(CHAR_WALKING);
+	}
+	
+	if(x > 0)
+		m_character.setDirection(CHAR_RIGHT);
+	if(x < 0)
+		m_character.setDirection(CHAR_LEFT);
+	
+	if(input.getKey(SDL_SCANCODE_SPACE) || input.getControllerButton(JOY0, SDL_CONTROLLER_BUTTON_A))
+	{
+		y *= 2;
+		x *= 2;
 	}
 	
 	m_character.moveX(x);
@@ -60,6 +81,28 @@ void Level::control(Input const& input)
 	m_character.moveY(y);
 	if(m_floor.touchesWall(m_character.getBox()))
 		m_character.moveY(-y);
+		
+	// shapeshift
+	if(input.getKey(SDL_SCANCODE_1))
+		m_character.shapeShift(SHAPE_1);
+	if(input.getKey(SDL_SCANCODE_2))
+		m_character.shapeShift(SHAPE_2);
+	if(input.getKey(SDL_SCANCODE_3))
+		m_character.shapeShift(SHAPE_3);
+	if(input.getKey(SDL_SCANCODE_4))
+		m_character.shapeShift(SHAPE_4);
+	if(input.getControllerButton(JOY0, SDL_CONTROLLER_BUTTON_LEFTSHOULDER) && m_currentButtonDown == NULL)
+	{
+		m_character.shapeShift(SHAPE_PREV);
+		m_currentButtonDown = SDL_CONTROLLER_BUTTON_LEFTSHOULDER;
+	}
+	if(input.getControllerButton(JOY0, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) && m_currentButtonDown == NULL)
+	{
+		m_character.shapeShift(SHAPE_NEXT);
+		m_currentButtonDown = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+	}
+	if(!input.getControllerButton(JOY0, m_currentButtonDown))
+		m_currentButtonDown = NULL;
 }
 
 void Level::setCamera()

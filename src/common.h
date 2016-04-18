@@ -38,5 +38,17 @@
 #define WINDOW_WIDTH 1440
 #define WINDOW_HEIGHT 900
 
+// shape constants
+enum Shapes 
+{ 
+	SHAPE_1, 
+	SHAPE_2, 
+	SHAPE_3, 
+	SHAPE_4, 
+	SHAPE_NEXT, 
+	SHAPE_PREV 
+};
+
+const int ANIMATION_FRAMES = 6;
 
 #endif // COMMON_H_INCLUDED
